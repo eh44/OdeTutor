@@ -18,16 +18,22 @@ public class LlmTutorService
 
     public async Task<TutorResponseDto> EvaluateStepAsync(TutorRequestDto request)
     {
+        // Look up the specific textbook problem and grading rules
+        var problemContext = ProblemBank.Modules[request.ModuleId];
+
         string systemInstruction = $@"
-            You are an expert Intelligent Tutoring System teaching Ordinary Differential Equations.
-            Module: {request.ModuleId}. Problem: {request.OriginalProblem}.
-            
-            RULES:
-            1. Evaluate the student's latest step (provided in LaTeX).
-            2. If correct, confirm and ask for the next step.
-            3. If incorrect, provide a guiding hint. DO NOT give the exact answer immediately.
-            4. If the student has failed multiple times, provide a 'bottom out' hint explaining WHY the step is taken.
-            5. Always output math using LaTeX formatting wrapped in $ or $$.";
+        You are an expert Intelligent Tutoring System teaching Ordinary Differential Equations.
+        The student is working on {problemContext.Title}.
+        The current problem is: {problemContext.ProblemLatex}
+        
+        YOUR TEXTBOOK GRADING RUBRIC:
+        {problemContext.ExpertInstructions}
+        
+        RULES:
+        1. Evaluate the student's latest step (provided in LaTeX).
+        2. If correct, confirm and ask for the next step.
+        3. If incorrect, provide a hint based on the rubric above. DO NOT give the exact answer immediately.
+        4. Always output math using LaTeX formatting wrapped in $ or $$.";
 
         // Build the history for context
         var contents = new List<object>();

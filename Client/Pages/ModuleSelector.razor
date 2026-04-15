@@ -1,0 +1,50 @@
+﻿@* File: Client/Pages/ModuleSelector.razor *@
+@page "/"
+@inject NavigationManager Navigation
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Math 2280: ODE Tutor</h1>
+        <p class="lead">Select a module to begin step-by-step practice.</p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card h-100 shadow-sm hover-card" style="cursor: pointer;" @onclick="@(() => LoadModule("separable"))">
+                <div class="card-body text-center">
+                    <h2 class="text-primary mb-3"><i class="bi bi-arrows-split"></i></h2>
+                    <h5 class="card-title">Chapter 4</h5>
+                    <p class="card-text">Separable First-Order Equations</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm hover-card" style="cursor: pointer;" @onclick="@(() => LoadModule("linear"))">
+                <div class="card-body text-center">
+                    <h2 class="text-success mb-3"><i class="bi bi-graph-up"></i></h2>
+                    <h5 class="card-title">Chapter 5</h5>
+                    <p class="card-text">Linear First-Order Equations</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 shadow-sm hover-card" style="cursor: pointer;" @onclick="@(() => LoadModule("substitution"))">
+                <div class="card-body text-center">
+                    <h2 class="text-warning mb-3"><i class="bi bi-arrow-left-right"></i></h2>
+                    <h5 class="card-title">Chapter 6</h5>
+                    <p class="card-text">Simplifying Through Substitution</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void LoadModule(string moduleId)
+    {
+        // Route the user to the workspace and pass the selected module in the URL
+        Navigation.NavigateTo($"/tutor/{moduleId}");
+    }
+}

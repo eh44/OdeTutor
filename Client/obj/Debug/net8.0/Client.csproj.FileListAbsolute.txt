@@ -1038,3 +1038,4 @@ C:\Users\eliza\RiderProjects\OdeTutorApp\Client\obj\Debug\net8.0\Client.dll
 C:\Users\eliza\RiderProjects\OdeTutorApp\Client\obj\Debug\net8.0\refint\Client.dll
 C:\Users\eliza\RiderProjects\OdeTutorApp\Client\obj\Debug\net8.0\Client.pdb
 C:\Users\eliza\RiderProjects\OdeTutorApp\Client\obj\Debug\net8.0\ref\Client.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Client\obj\Debug\net8.0\Client.sourcelink.json

@@ -1,5 +1,5 @@
 ﻿@* File: Client/Pages/TutorWorkspace.razor *@
-@page "/tutor"
+@page "/tutor/{SelectedModuleId}"
 @using Shared
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
@@ -55,10 +55,27 @@
 </div>
 
 @code {
-    private string CurrentProblemStatement = "\\frac{dy}{dt} + 2y = t, \\quad y(0) = -1";
+    // 1. Capture the module ID from the URL
+    [Parameter]
+    public string SelectedModuleId { get; set; } = "separable"; // Default fallback
+
+    private string CurrentProblemStatement = string.Empty;
     private string CurrentInput = string.Empty;
     private bool IsLoading = false;
     private List<StepInteraction> InteractionLog = new();
+
+    // 2. Set the math problem based on the selected module when the page loads
+    protected override void OnInitialized()
+    {
+        if (SelectedModuleId == "separable")
+            CurrentProblemStatement = "\\frac{dy}{dx} = 3xy^3, \\quad y(0)=\\frac{1}{2}";
+        else if (SelectedModuleId == "linear")
+            CurrentProblemStatement = "\\frac{dy}{dx} + 6xy = \\sin(x), \\quad y(0)=4";
+        else if (SelectedModuleId == "substitution")
+            CurrentProblemStatement = "\\frac{dy}{dx} = \\frac{y}{x} + \\left(\\frac{x}{y}\\right)^2";
+        else
+            CurrentProblemStatement = "\\frac{dy}{dt} + 2y = t, \\quad y(0) = -1"; // Fallback
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -75,7 +92,8 @@
 
         var request = new TutorRequestDto
         {
-            ModuleId = "First-Order Linear Equations",
+            // 3. Pass the dynamic ModuleId to your backend so Gemini knows which rubric to use
+            ModuleId = SelectedModuleId, 
             OriginalProblem = CurrentProblemStatement,
             StudentNewStep = stepToSubmit,
             ConversationHistory = InteractionLog
