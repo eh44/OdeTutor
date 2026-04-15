@@ -1,0 +1,112 @@
+﻿@* File: Client/Pages/TutorWorkspace.razor *@
+@page "/tutor"
+@using Shared
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
+<div class="container mt-4">
+    <h3>CS5620 ODE Tutor</h3>
+    
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">Current Problem</div>
+        <div class="card-body">
+            <p>$$ @CurrentProblemStatement $$</p>
+        </div>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-secondary text-white">Workspace</div>
+        <div class="card-body">
+            @foreach (var interaction in InteractionLog)
+            {
+                <div class="mb-3">
+                    <div class="p-2 bg-light border rounded mb-1">
+                        <strong>Your Step:</strong> $$ @interaction.StudentStep $$
+                    </div>
+                    <div class="p-2 text-white rounded @(interaction.IsCorrect ? "bg-success" : "bg-warning text-dark")">
+                        <strong>Feedback:</strong> @interaction.AiFeedback
+                    </div>
+                </div>
+            }
+            @if (IsLoading)
+            {
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @if (!string.IsNullOrWhiteSpace(CurrentInput))
+            {
+                <div class="mb-3 p-3 border rounded bg-light">
+                    <strong>Preview:</strong> $$ @CurrentInput $$
+                </div>
+            }
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Type LaTeX here..." 
+                       @bind="CurrentInput" @bind:event="oninput" @onkeyup="HandleKeyPress" disabled="@IsLoading" />
+                <button class="btn btn-primary" @onclick="SubmitStep" disabled="@(string.IsNullOrWhiteSpace(CurrentInput) || IsLoading)">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string CurrentProblemStatement = "\\frac{dy}{dt} + 2y = t, \\quad y(0) = -1";
+    private string CurrentInput = string.Empty;
+    private bool IsLoading = false;
+    private List<StepInteraction> InteractionLog = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("typesetMath");
+    }
+
+    private async Task SubmitStep()
+    {
+        if (string.IsNullOrWhiteSpace(CurrentInput)) return;
+
+        IsLoading = true;
+        string stepToSubmit = CurrentInput;
+        CurrentInput = string.Empty;
+
+        var request = new TutorRequestDto
+        {
+            ModuleId = "First-Order Linear Equations",
+            OriginalProblem = CurrentProblemStatement,
+            StudentNewStep = stepToSubmit,
+            ConversationHistory = InteractionLog
+        };
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/tutor/evaluate", request);
+            var result = await response.Content.ReadFromJsonAsync<TutorResponseDto>();
+
+            if (result != null)
+            {
+                InteractionLog.Add(new StepInteraction
+                {
+                    StudentStep = stepToSubmit,
+                    AiFeedback = result.LlmFeedback,
+                    IsCorrect = result.IsCorrectDirection
+                });
+            }
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await SubmitStep();
+        }
+    }
+}
