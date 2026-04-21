@@ -7,7 +7,7 @@
 @inject NavigationManager Navigation
 
 <div class="container mt-4">
-    <h3>CS5620 ODE Tutor</h3>
+    <h3>ODE Tutor</h3>
     
     <div class="card mb-4 shadow-sm">
         <div class="card-header bg-primary text-white">Current Problem</div>
@@ -51,8 +51,15 @@
             @if (!IsProblemSolved)
             {
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" @bind="CurrentInput" @bind:event="oninput" placeholder="Type your next step in LaTeX..." />
+                    <input type="text" 
+                           class="form-control" 
+                           @bind="CurrentInput" 
+                           @bind:event="oninput" 
+                           @onkeyup="HandleKeyPress"
+                           placeholder="Type your next step in LaTeX..." />
+                    
                     <button class="btn btn-primary" @onclick="SubmitStep" disabled="@IsLoading">Submit</button>
+                    <button class="btn btn-warning" @onclick="RequestHint" disabled="@IsLoading">I'm Stuck</button>
                 </div>
             }
             else
