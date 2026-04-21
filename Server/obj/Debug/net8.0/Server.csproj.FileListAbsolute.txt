@@ -34,3 +34,16 @@ C:\Users\eliza\RiderProjects\OdeTutorApp\Server\obj\Debug\net8.0\refint\Server.d
 C:\Users\eliza\RiderProjects\OdeTutorApp\Server\obj\Debug\net8.0\Server.pdb
 C:\Users\eliza\RiderProjects\OdeTutorApp\Server\obj\Debug\net8.0\Server.genruntimeconfig.cache
 C:\Users\eliza\RiderProjects\OdeTutorApp\Server\obj\Debug\net8.0\ref\Server.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\Google.Apis.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\Google.Apis.Auth.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\Google.Apis.Core.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\Google.GenAI.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\Microsoft.Extensions.AI.Abstractions.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\System.IO.Pipelines.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\System.Management.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\System.Text.Encodings.Web.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\System.Text.Json.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+C:\Users\eliza\RiderProjects\OdeTutorApp\Server\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll

@@ -11,16 +11,25 @@
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="Client.styles.css" rel="stylesheet" />
     <script>
-        window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
-            startup: { typeset: false }
-        };
+        let typingTimer = null;
+        // The Promise Queue ensures MathJax only ever processes one request at a time
+        let mathJaxPromise = Promise.resolve();
+
         window.typesetMath = function () {
-            if (window.MathJax) {
-                window.MathJax.typesetClear();
-                window.MathJax.typesetPromise();
+            if (typingTimer) {
+                clearTimeout(typingTimer);
             }
-        }
+
+            typingTimer = setTimeout(() => {
+                // Chain the new typesetting request to the end of the promise queue
+                mathJaxPromise = mathJaxPromise.then(() => {
+                    if (window.MathJax) {
+                        MathJax.typesetClear();
+                        return MathJax.typesetPromise();
+                    }
+                }).catch(err => console.error('MathJax Error:', err));
+            }, 300); // Wait 300ms after the user stops typing
+        };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>

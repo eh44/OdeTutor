@@ -13,8 +13,10 @@ public class TutorResponseDto
 {
     public bool IsCorrectDirection { get; set; }
     public string LlmFeedback { get; set; } = string.Empty;
+    
+   
+    public bool IsProblemComplete { get; set; } 
 }
-
 public class StepInteraction
 {
     public string StudentStep { get; set; } = string.Empty;
